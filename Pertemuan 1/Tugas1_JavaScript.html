@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas 1 JavaScript</title>
+
+    <style>
+        body {
+            text-align: center;
+            justify-content: center;
+        }
+
+        .wrapper {
+            display: flex;
+            justify-content: center;
+        }
+
+        .Card {
+            border: 1px solid black;
+            border-radius: 10px;
+            color: white;
+            background-color: royalblue;
+            padding: 10px;
+            margin: 10px;
+            width: 300px;
+        }
+
+        input {
+            margin: 5px;
+        }
+
+        button {
+            margin: 5px;
+            color: white;
+            border: 1px solid white;
+            background-color: royalblue;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            color: royalblue;
+            border: 1px solid royalblue;
+            background-color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Menghitung Luas Persegi Panjang, Bujur Sangkar, dan Segitiga Menggunakan Variable dan Operator</h2>
+    <div class="wrapper">
+        <div class="Card">
+            <h3>Hitung Luas Persegi Panjang</h3>
+            <input type="number" id="panjang" placeholder="Panjang"><br>
+            <input type="number" id="lebar" placeholder="Lebar"><br>
+            <button onclick="hitungPP()">Hitung Luas</button>
+            <p id="luasPersegiPanjang"></p>
+        </div>
+
+        <div class="Card">
+            <h3>Hitung Luas Bujur Sangkar</h3>
+            <input type="number" id="sisi" placeholder="Sisi"><br>
+            <button onclick="hitungBS()">Hitung Luas</button>
+            <p id="luasBujurSangkar"></p>
+        </div>
+
+        <div class="Card">
+            <h3>Hitung Luas Segitiga</h3>
+            <input type="number" id="alas" placeholder="Alas"><br>
+            <input type="number" id="tinggi" placeholder="Tinggi"><br>
+            <button onclick="hitungST()">Hitung Luas</button>
+            <p id="luasSegitiga"></p>
+        </div>
+    </div>
+
+    <script>
+        // Luas Persegi Panjang dengan rumus P x L
+        function hitungLuasPersegiPanjang(panjang, lebar) {
+            return panjang * lebar;
+        }
+
+        // Luas Bujur Sangkar dengan rumus s x s
+        function hitungLuasBujurSangkar(sisi) {
+            return sisi * sisi;
+        }
+
+        // Luas Segitiga dengan rumus 1/2 x a x t
+        function hitungLuasSegitiga(alas, tinggi) {
+            return 0.5 * alas * tinggi;
+        }
+
+        // Mengambil Nilai dari Input Form Persegi Panjang
+        function hitungPP() {
+            let p = document.getElementById("panjang").value;
+            let l = document.getElementById("lebar").value;
+            let luas = hitungLuasPersegiPanjang(p, l);
+            document.getElementById("luasPersegiPanjang").innerHTML = "Luas Persegi Panjang: " + luas;
+        }
+
+        // Mengambil Nilai dari Input Form Bujur Sangkar
+        function hitungBS() {
+            let s = document.getElementById("sisi").value;
+            let luas = hitungLuasBujurSangkar(s);
+            document.getElementById("luasBujurSangkar").innerHTML = "Luas Bujur Sangkar: " + luas;
+        }
+
+        // Mengambil Nilai dari Input Form Segitiga
+        function hitungST() {
+            let a = document.getElementById("alas").value;
+            let t = document.getElementById("tinggi").value;
+            let luas = hitungLuasSegitiga(a, t);
+            document.getElementById("luasSegitiga").innerHTML = "Luas Segitiga: " + luas;
+        }
+    </script>
+</body>
+
+</html>
