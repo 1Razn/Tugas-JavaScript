@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas 2 JavaScript</title>
+
+    <style>
+        body {
+            text-align: center;
+            background-color: slategray;
+        }
+
+        .wrapper {
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        table {
+            width: 100%;
+            text-align: center;
+        }
+
+        tbody {
+            background-color: white;
+        }
+
+        thead {
+            background-color: royalblue;
+            color: white;
+        }
+
+        tfoot {
+            background-color: royalblue;
+            color: white;
+        }
+
+        th, td {
+            padding: 10px;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Tugas 2 JavaScript Table Karyawan</h1>
+    <div class="wrapper">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Umur</th>
+                    <th>Jabatan</th>
+                    <th>Status</th>
+                    <th>Gaji Pokok</th>
+                    <th>Tunjangan Jabatan</th>
+                    <th>BPJS</th>
+                    <th>Tunjangan Keluarga</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Dodi Prayodi</td>
+                    <td>25</td>
+                    <td id="Jabatan">Manager</td>
+                    <td id="Status">Menikah</td>
+                    <td id="Gapok"></td>
+                    <td id="Tunjab"></td>
+                    <td id="BPJS"></td>
+                    <td id="Tunkel"></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Gaji Total</td>
+                    <td colspan="7" id="GajiTotal"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <script>
+        var Jabatan = document.getElementById("Jabatan").innerHTML;
+        var Status = document.getElementById("Status").innerHTML;
+        var Gapok, Tunjab, BPJS, Tunkel, GajiTotal;
+
+        if (Jabatan == "Manager") {
+            Gapok = 15000000;
+        } else if (Jabatan == "Asisten Manager") {
+            Gapok = 10000000;
+        } else {
+            Gapok = 5000000;
+        }
+
+        if (Status == "Menikah") {
+            Tunkel = 20 / 100 * Gapok;
+        } else {
+            Tunkel = 0;
+        }
+
+        BPJS = 10 / 100 * Gapok;
+        Tunjab = 15 / 100 * Gapok;
+        GajiTotal = Gapok + Tunjab + BPJS + Tunkel;
+
+        document.getElementById("Gapok").innerHTML = Gapok.toLocaleString('id-ID');
+        document.getElementById("Tunjab").innerHTML = Tunjab.toLocaleString('id-ID');
+        document.getElementById("BPJS").innerHTML = BPJS.toLocaleString('id-ID');
+        document.getElementById("Tunkel").innerHTML = Tunkel.toLocaleString('id-ID');
+        document.getElementById("GajiTotal").innerHTML = GajiTotal.toLocaleString('id-ID');
+    </script>
+</body>
+</html>
