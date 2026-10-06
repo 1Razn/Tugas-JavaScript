@@ -57,110 +57,125 @@
   </div>
 
   <script>
-    //List data produk
-    let produkToko = [
-      { id: 1, nama: "Laptop", harga: 7000000, stok: 5 },
-      { id: 2, nama: "Mouse", harga: 200000, stok: 10 },
-      { id: 3, nama: "Keyboard", harga: 350000, stok: 7 },
-      { id: 4, nama: "Monitor", harga: 1500000, stok: 3 },
-      { id: 5, nama: "Printer", harga: 1200000, stok: 2 }
+    // Data Produk
+    let produkList = [
+      { id: 1, nama: "Laptop", harga: 12000000, stok: 5 },
+      { id: 2, nama: "Smartphone", harga: 5000000, stok: 10 },
+      { id: 3, nama: "Tablet", harga: 3000000, stok: 7 },
+      { id: 4, nama: "Monitor", harga: 2500000, stok: 4 },
+      { id: 5, nama: "Keyboard", harga: 500000, stok: 15 }
     ];
 
-    //Fungsi Tampil Detail Produk (Destructuring)
-    function tampilDetailProduk({ nama, harga, stok }) {
-      console.log(`Detail: ${nama} - Rp ${harga.toLocaleString('id-ID')} - Stok: ${stok}`);
-    }
+    // Event Handler Object
+    const eventHandler = {
+      // Event Listener untuk tombol tambah
+      handleAddButton: function () {
+        document.getElementById('btn-tambah').addEventListener('click', () => {
+          const nama = document.getElementById('inputNama').value;
+          const harga = parseInt(document.getElementById('inputHarga').value);
+          const stok = parseInt(document.getElementById('inputStok').value);
 
-    //Fungsi Tambah Banyak Produk (Rest Parameter)
-    function tambahBanyakProduk(...produkBaru) {
-      // Spread Operator (...) menyebarkan isi array lama dan array baru digabung
-      produkToko = [...produkToko, ...produkBaru];
-      console.log("Produk baru dari rest parameter berhasil ditambahkan:", produkBaru);
-      tampilProduk();
-    }
-
-    //Fungsi Tambah Produk (Dari Form Input)
-    function tambahProduk() {
-      let nama = document.getElementById("inputNama").value;
-      let harga = document.getElementById("inputHarga").value;
-      let stok = document.getElementById("inputStok").value;
-
-      if (nama && harga && stok) {
-        let idTerakhir = 0;
-        for (let i = 0; i < produkToko.length; i++) {
-          if (produkToko[i].id > idTerakhir) {
-            idTerakhir = produkToko[i].id;
+          if (nama && harga && stok) {
+            const idBaru = produkList.length > 0 ? Math.max(...produkList.map(p => p.id)) + 1 : 1;
+            tambahProduk(idBaru, nama, harga, stok);
+            tampilkanProduk();
+            
+            // Reset form
+            document.getElementById('inputNama').value = '';
+            document.getElementById('inputHarga').value = '';
+            document.getElementById('inputStok').value = '';
+          } else {
+            alert('Mohon lengkapi semua data!');
           }
-        }
-        let idBaru = idTerakhir + 1;
+        });
+      },
 
-        //Tambahkan produk baru ke array produkToko menggunakan spread operator
-        produkToko = [...produkToko, {
-          id: idBaru,
-          nama: nama,
-          harga: parseInt(harga),
-          stok: parseInt(stok)
-        }];
+      // Event Delegation untuk tombol hapus
+      handleDeleteButton: function () {
+        document.getElementById('tabel-produk').addEventListener('click', (event) => {
+          if (event.target.classList.contains('btn-hapus')) {
+            const id = parseInt(event.target.dataset.id);
+            hapusProduk(id);
+            tampilkanProduk();
+          }
+        });
+      }
+    };
 
-        //Reset form
-        document.getElementById("inputNama").value = "";
-        document.getElementById("inputHarga").value = "";
-        document.getElementById("inputStok").value = "";
+    // Tambah Produk dengan Spread Operator
+    function tambahProduk(id, nama, harga, stok = 0, ...produkLainnya) {
+      // Spread Operator untuk menambah produk baru ke array
+      produkList = [...produkList, { id, nama, harga, stok }];
 
-        console.log("Produk baru dari form berhasil ditambahkan:", produkToko);
-        tampilProduk();
+      // Jika ada produk lain yang ingin ditambahkan
+      if (produkLainnya.length > 0) {
+        produkList = [...produkList, ...produkLainnya];
+      }
+
+      console.log(`Tambah produk berhasil: ${nama}, Harga: ${harga}, Stok: ${stok}`);
+      return produkList;
+    }
+
+    // Hapus Produk 
+    function hapusProduk(id, ...idsLainnya) {
+      // Menggunakan filter untuk menghapus produk
+      produkList = produkList.filter(produk => produk.id !== id);
+
+      // Jika ada ID lain yang ingin dihapus (Rest Parameter)
+      if (idsLainnya.length > 0) {
+        idsLainnya.forEach(idLain => {
+          produkList = produkList.filter(produk => produk.id !== idLain);
+        });
+      }
+
+      console.log(`Produk dengan ID ${id} berhasil dihapus`);
+      return produkList;
+    }
+
+    // Menampilkan Produk dengan Destructuring
+    function tampilkanProduk() {
+      const tbody = document.getElementById('tabel-produk');
+      tbody.innerHTML = '';
+
+      produkList.forEach(({ id, nama, harga, stok }) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+      <td>${id}</td>
+      <td>${nama}</td>
+      <td>Rp ${harga.toLocaleString('id-ID')}</td>
+      <td>${stok}</td>
+      <td>
+        <button class="btn btn-danger btn-sm btn-hapus" data-id="${id}">Hapus</button>
+      </td>
+    `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Inisialisasi Event Handler
+    function init() {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          eventHandler.handleAddButton();
+          eventHandler.handleDeleteButton();
+          tampilkanProduk();
+        });
       } else {
-        alert("Isi semua data produk sebelum menambahkan!");
+        eventHandler.handleAddButton();
+        eventHandler.handleDeleteButton();
+        tampilkanProduk();
       }
     }
 
-    //Fungsi Hapus Produk
-    function hapusProduk(id) {
-      // Filter membuat array baru tanpa elemen yang id-nya cocok
-      produkToko = produkToko.filter(produk => produk.id !== id);
-      tampilProduk();
-    }
+    // Jalankan inisialisasi
+    init();
 
-    //Fungsi Tampil Produk dengan DESTRUCTURING di forEach
-    function tampilProduk() {
-      let tbody = document.getElementById("tabel-produk");
-      tbody.innerHTML = "";
+    // Penggunaan
+    tambahProduk(6, "Mouse", 150000, 20);
+    tampilkanProduk();
 
-      // Fungsi Tampil Produk dengan destructuring di forEach
-      produkToko.forEach(({ id, nama, harga, stok }) => {
-        let baris = `
-      <tr>
-        <td>${id}</td>
-        <td>${nama}</td>
-        <td>Rp ${harga.toLocaleString('id-ID')}</td>
-        <td>${stok}</td>
-        <td>
-          <!-- Tambahkan class 'btn-hapus' dan data-id untuk Event Delegation -->
-          <button class="btn btn-danger btn-hapus" data-id="${id}">Hapus</button>
-        </td>
-      </tr>
-    `;
-        tbody.innerHTML += baris;
-      });
-
-      //Event Delegation untuk tombol hapus
-      tbody.addEventListener('click', (event) => {
-        if (event.target.classList.contains('btn-hapus')) {
-          let id = parseInt(event.target.dataset.id);
-          hapusProduk(id);
-        }
-      });
-    }
-
-    //Event Listener untuk tombol tambah
-    document.getElementById("btn-tambah").addEventListener("click", tambahProduk);
-
-    //Jalankan saat halaman dibuka
-    tampilProduk();
-
-    //Contoh pemanggilan fungsi destructuring & rest parameter 
-    tampilDetailProduk(produkToko[0]);
-    tambahBanyakProduk({id: 6, nama: "Headset", harga: 300000, stok: 5}, {id: 7, nama: "Webcam", harga: 450000, stok: 2});
+    hapusProduk(2);
+    tampilkanProduk();
 
   </script>
 </body>
